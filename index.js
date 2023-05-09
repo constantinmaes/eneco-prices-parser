@@ -39,7 +39,7 @@ function downloadFile(year, month) {
 
 async function parseTrimestrialTariff(dest) {
     const raw = await pdf2html.text(dest);
-    const arr = raw.split('\n').filter(l => l !== '').find(l => l.toLowerCase().includes('tarif trimestriel')).split(' ').map(el => el.replace(',', '.'));
+    const arr = raw.split('\n').filter(l => l !== '').find(l => l.toLowerCase().includes('tarif mensuel')).split(' ').map(el => el.replace(',', '.'));
     const dayTariff = parseFloat(arr[1]);
     const nightTariff = parseFloat(arr[2]);
     return { peak: dayTariff, offpeak: nightTariff };
@@ -51,7 +51,7 @@ const fetchTariffs = async () => {
     console.log(`Fetching prices for ${month}-${year}`);
     const dest = await downloadFile(year, month);
     const tariffs = await parseTrimestrialTariff(dest);
-    console.log(tariffs.dayTariff, tariffs.nightTariff);
+    console.log(tariffs.peak, tariffs.offpeak);
     return tariffs;
 };
 
